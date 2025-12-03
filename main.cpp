@@ -1,9 +1,4 @@
-#include <iostream>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include "Server.hpp"
 
 int main(int ac, char **av) {
     
@@ -12,5 +7,5 @@ int main(int ac, char **av) {
         std::cout << "Good format = ./ircserv <port> <password>" << std::endl;
         return 1;
     }
-
+    
 }

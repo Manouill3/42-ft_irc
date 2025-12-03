@@ -29,7 +29,7 @@ public:
     Server &operator=(const Server& obj);
     ~Server();
     
-    
+    void setup(char *port, char *password);
 };
 
 #endif
