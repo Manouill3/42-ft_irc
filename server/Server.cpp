@@ -26,7 +26,18 @@ Server::~Server() {}
 void Server::setup(char *port, char *password) {
     
     int sock = socket(AF_INET, SOCK_STREAM, 0);
-    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, );
+    
+    int yes = 1;
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+    
     fcntl(sock, F_SETFL, O_NONBLOCK);
-    bind();
+
+    sockaddr_in serv{};
+    serv.sin_family = AF_INET;
+    serv.sin_addr.s_addr = INADDR_ANY;
+    serv.sin_port = htons(8080);
+
+    bind(sock, (sockaddr*)&serv, sizeof(serv));
+
+    listen(sock, 10);
 }
