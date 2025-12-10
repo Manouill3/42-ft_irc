@@ -2,11 +2,16 @@
 
 Server::Server() {}
 
+Server::Server(std::string port, std::string password) {
+    this->port = atoi(port.c_str());
+    this->password = password;
+}
+
 Server::Server(const Server &obj) {
     
     serverSocket = obj.serverSocket;
-    clients = obj.clients;
-    channels = obj.channels;
+    // clients = obj.clients;
+    // channels = obj.channels;
     fds = obj.fds;
 }
 
@@ -14,8 +19,8 @@ Server &Server::operator=(const Server &obj) {
     
     if (&obj != this) {
         serverSocket = obj.serverSocket;
-        clients = obj.clients;
-        channels = obj.channels;
+        // clients = obj.clients;
+        // channels = obj.channels;
         fds = obj.fds;
     }
     return (*this);
@@ -23,19 +28,19 @@ Server &Server::operator=(const Server &obj) {
 
 Server::~Server() {}
 
-void Server::setup(char *port, char *password) {
+void Server::setup() {
     
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     
-    int yes = 1;
-    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+    int opt = 1;
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     
     fcntl(sock, F_SETFL, O_NONBLOCK);
 
     sockaddr_in serv{};
     serv.sin_family = AF_INET;
     serv.sin_addr.s_addr = INADDR_ANY;
-    serv.sin_port = htons(8080);
+    serv.sin_port = htons(port);
 
     bind(sock, (sockaddr*)&serv, sizeof(serv));
 

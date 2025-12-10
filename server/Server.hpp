@@ -10,27 +10,32 @@
 #include <fcntl.h>
 #include <cstring>
 #include <iostream>
-#include <list>
+#include <map>
 #include <vector>
+#include "Client.hpp"
 
 
 class Server {
 
 private:
     
+    int port;
+    std::string password;
+
     int serverSocket;
-    std::list<int> clients;
-    std::list<std::string> channels;
+    // std::map<int, *Client> clients;
+    // std::map<std::string> channels;
     std::vector<int> fds;
     
 public:
 
     Server();
+    Server(std::string port, std::string password);
     Server(const Server& obj);
     Server &operator=(const Server& obj);
     ~Server();
     
-    void setup(char *port, char *password);
+    void setup();
 };
 
 #endif
