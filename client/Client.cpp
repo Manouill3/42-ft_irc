@@ -25,4 +25,4 @@ Client &Client::operator=(const Client &obj){
     return (*this);
 }
 
-Client::~Client() { }
+Client::~Client() {}

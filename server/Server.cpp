@@ -9,19 +9,27 @@ Server::Server(std::string port, std::string password) {
 
 Server::Server(const Server &obj) {
     
+    port = obj.port;
+    password = obj.password;
     serverSocket = obj.serverSocket;
+    readfds = obj.readfds;
+    writefds = obj.writefds;
+    exceptfds = obj.exceptfds;
     // clients = obj.clients;
     // channels = obj.channels;
-    fds = obj.fds;
 }
 
 Server &Server::operator=(const Server &obj) {
     
     if (&obj != this) {
+        port = obj.port;
+        password = obj.password;
         serverSocket = obj.serverSocket;
+        readfds = obj.readfds;
+        writefds = obj.writefds;
+        exceptfds = obj.exceptfds;
         // clients = obj.clients;
         // channels = obj.channels;
-        fds = obj.fds;
     }
     return (*this);
 }
@@ -30,19 +38,29 @@ Server::~Server() {}
 
 void Server::setup() {
     
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     
     int opt = 1;
-    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     
-    fcntl(sock, F_SETFL, O_NONBLOCK);
+    fcntl(serverSocket, F_SETFL, O_NONBLOCK);
 
     sockaddr_in serv{};
     serv.sin_family = AF_INET;
     serv.sin_addr.s_addr = INADDR_ANY;
     serv.sin_port = htons(port);
 
-    bind(sock, (sockaddr*)&serv, sizeof(serv));
+    bind(serverSocket, (sockaddr*)&serv, sizeof(serv));
 
-    listen(sock, 10);
+    listen(serverSocket, 10);
+}
+
+void Server::start() {
+    
+    running = true;
+    while (running) {
+        int activity = select(serverSocket, &readfds, &writefds, &exceptfds, NULL);
+
+        
+    }
 }

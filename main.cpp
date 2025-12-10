@@ -9,6 +9,6 @@ int main(int ac, char **av) {
         return 1;
     }
 
-    
-
+    Server serv(av[1], av[2]);
+    serv.start();
 }

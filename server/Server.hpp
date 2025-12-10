@@ -20,12 +20,15 @@ class Server {
 private:
     
     int port;
+    bool running;
+    int serverSocket;
     std::string password;
 
-    int serverSocket;
+    fd_set readfds;
+    fd_set writefds;
+    fd_set exceptfds;
     // std::map<int, *Client> clients;
     // std::map<std::string> channels;
-    std::vector<int> fds;
     
 public:
 
@@ -36,6 +39,7 @@ public:
     ~Server();
     
     void setup();
+    void start();
 };
 
 #endif
