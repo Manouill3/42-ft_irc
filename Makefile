@@ -8,10 +8,14 @@ NAME = ircserv
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -g -std=c++98
 
-SRC = main.cpp
+SRC = 	main.cpp \
+		client/Client.cpp \
+		server/Server.cpp \
 
 DIR = build
-OBJ = $(SRC:%.cpp=$(DIR)/%.o)
+OBJ = $(patsubst %.cpp,$(DIR)/%.o,$(notdir $(SRC)))
+
+VPATH = . client server
 
 all: $(NAME)
 
@@ -19,7 +23,7 @@ $(DIR):
 		@mkdir -p $(DIR)
 
 $(NAME): $(OBJ)
-		@$(CC) $(SRC) $(CFLAGS) -o $(NAME)
+		@$(CC) $(OBJ) $(CFLAGS) -o $(NAME)
 		@echo "$(GREEN)SUCCESS$(RESET)"
 
 $(DIR)/%.o : %.cpp | $(DIR)

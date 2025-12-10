@@ -12,7 +12,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "Client.hpp"
+#include <stdlib.h> 
+#include "../client/Client.hpp"
 
 
 class Server {
@@ -26,6 +27,7 @@ private:
     // std::map<int, *Client> clients;
     // std::map<std::string> channels;
     std::vector<int> fds;
+    bool    ServerStatus;
     
 public:
 
@@ -35,7 +37,9 @@ public:
     Server &operator=(const Server& obj);
     ~Server();
     
+    void Start();
     void setup();
+
 };
 
 #endif

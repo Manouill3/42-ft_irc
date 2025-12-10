@@ -28,6 +28,15 @@ Server &Server::operator=(const Server &obj) {
 
 Server::~Server() {}
 
+void Server::Start(){
+    this->ServerStatus = true;
+
+    while(ServerStatus)
+    {
+        std::cout << "Hello" << std::endl;
+    }
+}
+
 void Server::setup() {
     
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -36,7 +45,6 @@ void Server::setup() {
     setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     
     fcntl(sock, F_SETFL, O_NONBLOCK);
-
     sockaddr_in serv{};
     serv.sin_family = AF_INET;
     serv.sin_addr.s_addr = INADDR_ANY;
