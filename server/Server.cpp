@@ -29,11 +29,14 @@ Server &Server::operator=(const Server &obj) {
 Server::~Server() {}
 
 void Server::Start(){
+
     this->ServerStatus = true;
+    int res;
 
     while(ServerStatus)
     {
         std::cout << "Hello" << std::endl;
+        res = poll(fds.data(), fds.size(), 500);
     }
 }
 
@@ -45,7 +48,7 @@ void Server::setup() {
     setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     
     fcntl(sock, F_SETFL, O_NONBLOCK);
-    sockaddr_in serv{};
+    sockaddr_in serv;
     serv.sin_family = AF_INET;
     serv.sin_addr.s_addr = INADDR_ANY;
     serv.sin_port = htons(port);
@@ -53,4 +56,7 @@ void Server::setup() {
     bind(sock, (sockaddr*)&serv, sizeof(serv));
 
     listen(sock, 10);
+
+    pollfd temp;
+    temp.fd = sock;
 }

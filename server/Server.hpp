@@ -13,6 +13,7 @@
 #include <map>
 #include <vector>
 #include <stdlib.h> 
+#include <poll.h>
 #include "../client/Client.hpp"
 
 
@@ -26,7 +27,7 @@ private:
     int serverSocket;
     // std::map<int, *Client> clients;
     // std::map<std::string> channels;
-    std::vector<int> fds;
+    std::vector<pollfd> fds;
     bool    ServerStatus;
     
 public:
@@ -41,5 +42,7 @@ public:
     void setup();
 
 };
+
+
 
 #endif
