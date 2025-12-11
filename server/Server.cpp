@@ -5,6 +5,7 @@ Server::Server() {}
 Server::Server(std::string port, std::string password) {
     this->port = atoi(port.c_str());
     this->password = password;
+    setup();
 }
 
 Server::Server(const Server &obj) {
@@ -12,9 +13,6 @@ Server::Server(const Server &obj) {
     port = obj.port;
     password = obj.password;
     serverSocket = obj.serverSocket;
-    readfds = obj.readfds;
-    writefds = obj.writefds;
-    exceptfds = obj.exceptfds;
     // clients = obj.clients;
     // channels = obj.channels;
 }
@@ -25,9 +23,6 @@ Server &Server::operator=(const Server &obj) {
         port = obj.port;
         password = obj.password;
         serverSocket = obj.serverSocket;
-        readfds = obj.readfds;
-        writefds = obj.writefds;
-        exceptfds = obj.exceptfds;
         // clients = obj.clients;
         // channels = obj.channels;
     }
@@ -45,7 +40,7 @@ void Server::setup() {
     
     fcntl(serverSocket, F_SETFL, O_NONBLOCK);
 
-    sockaddr_in serv{};
+    sockaddr_in serv;
     serv.sin_family = AF_INET;
     serv.sin_addr.s_addr = INADDR_ANY;
     serv.sin_port = htons(port);
@@ -53,13 +48,20 @@ void Server::setup() {
     bind(serverSocket, (sockaddr*)&serv, sizeof(serv));
 
     listen(serverSocket, 10);
+    
+    pollfd tmp;
+    tmp.fd = serverSocket;
+    fds.push_back(tmp);
 }
 
 void Server::start() {
     
     running = true;
     while (running) {
-        int activity = select(serverSocket, &readfds, &writefds, &exceptfds, NULL);
+        int activity = poll(fds.data(), fds.size(), 30);
+        
+        if (activity < 0)
+            running = false;
 
         
     }

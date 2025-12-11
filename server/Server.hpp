@@ -12,7 +12,9 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "Client.hpp"
+#include <stdlib.h>
+#include <poll.h>
+#include "../client/Client.hpp"
 
 
 class Server {
@@ -24,9 +26,7 @@ private:
     int serverSocket;
     std::string password;
 
-    fd_set readfds;
-    fd_set writefds;
-    fd_set exceptfds;
+    std::vector <pollfd> fds;
     // std::map<int, *Client> clients;
     // std::map<std::string> channels;
     

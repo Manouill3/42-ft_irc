@@ -8,10 +8,12 @@ NAME = ircserv
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -g -std=c++98
 
-SRC = main.cpp
+SRC = main.cpp\
+		server/Server.cpp\
+		client/Client.cpp
 
 DIR = build
-OBJ = $(SRC:%.cpp=$(DIR)/%.o)
+OBJ = $(SRC:*/%.cpp=$(DIR)/%.o)
 
 all: $(NAME)
 
