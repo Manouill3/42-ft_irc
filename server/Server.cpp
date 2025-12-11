@@ -31,12 +31,16 @@ Server::~Server() {}
 void Server::Start(){
 
     this->ServerStatus = true;
-    int res;
+    int pollRes;
 
     while(ServerStatus)
     {
         std::cout << "Hello" << std::endl;
-        res = poll(fds.data(), fds.size(), 500);
+        pollRes = poll(fds.data(), fds.size(), 500);
+        if (pollRes == 0){
+            continue;
+        }
+        
     }
 }
 
