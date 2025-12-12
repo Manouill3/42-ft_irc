@@ -10,6 +10,8 @@
 #include <fcntl.h>
 #include <cstring>
 #include <iostream>
+#include <cerrno>
+#include <errno.h>
 #include <map>
 #include <vector>
 #include <stdlib.h> 

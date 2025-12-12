@@ -40,7 +40,17 @@ void Server::Start(){
         if (pollRes == 0){
             continue;
         }
-        
+        else if (pollRes < 0)
+        {
+            if (errno == EINTR)
+                std::cout << "Interrupted system call" << std::endl;
+            else
+            {
+                std::cout << strerror(errno) << std::endl;
+                errno;
+            }
+            break;
+        } 
     }
 }
 
