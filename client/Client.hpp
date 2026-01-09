@@ -22,4 +22,4 @@ public :
     ~Client();
 };
 
- #endif //client.hpp
+ #endif

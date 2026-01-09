@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <cstring>
 #include <iostream>
+#include <cstddef>
 #include <cerrno>
 #include <errno.h>
 #include <map>
@@ -17,7 +18,7 @@
 #include <stdlib.h> 
 #include <poll.h>
 #include "../client/Client.hpp"
-
+#define nullptr 0
 
 class Server {
 
@@ -29,6 +30,7 @@ private:
     int serverSocket;
     // std::map<int, *Client> clients;
     // std::map<std::string> channels;
+    std::vector<sockaddr_in> sin;
     std::vector<pollfd> fds;
     bool    ServerStatus;
     
@@ -42,6 +44,7 @@ public:
     
     void Start();
     void setup();
+    void AcceptNewClient();
 
 };
 

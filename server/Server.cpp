@@ -35,8 +35,9 @@ void Server::Start(){
 
     while(ServerStatus)
     {
-        std::cout << "Hello" << std::endl;
+        
         pollRes = poll(fds.data(), fds.size(), 500);
+        std::cout << fds.data() << "Coucou" << std::endl;
         if (pollRes == 0){
             continue;
         }
@@ -50,7 +51,21 @@ void Server::Start(){
                 errno;
             }
             break;
-        } 
+        }
+        AcceptNewClient();
+    }
+}
+
+void    Server::AcceptNewClient()
+{
+    std::cout << "Hello where" << std::endl;
+    sockaddr_in client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    int clientFd = accept(fds[0].fd, ((sockaddr*)&client_addr), &client_len);
+    if (clientFd < 0)
+    {
+        std::cout << strerror(errno) << std::endl;
+        errno;
     }
 }
 
@@ -64,13 +79,13 @@ void Server::setup() {
     fcntl(sock, F_SETFL, O_NONBLOCK);
     sockaddr_in serv;
     serv.sin_family = AF_INET;
-    serv.sin_addr.s_addr = INADDR_ANY;
+    serv.sin_addr.s_addr = INADDR_ANY; // Écouter sur toutes les interfaces
     serv.sin_port = htons(port);
-
     bind(sock, (sockaddr*)&serv, sizeof(serv));
-
+    
     listen(sock, 10);
-
     pollfd temp;
     temp.fd = sock;
+    fds.push_back(temp);
+    serverSocket = sock;
 }

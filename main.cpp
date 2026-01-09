@@ -9,7 +9,9 @@ int main(int ac, char **av) {
         std::cout << "Good format = ./ircserv <port> <password>" << std::endl;
         return 1;
     }
-    Server Serv;
+    
+    Server Serv("8080", "coco");
+    Serv.setup();
     Serv.Start();
     
 
