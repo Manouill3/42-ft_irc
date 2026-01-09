@@ -58,7 +58,6 @@ void Server::Start(){
 
 void    Server::AcceptNewClient()
 {
-    std::cout << "Hello where" << std::endl;
     sockaddr_in client_addr;
     socklen_t client_len = sizeof(client_addr);
     int clientFd = accept(fds[0].fd, ((sockaddr*)&client_addr), &client_len);
@@ -67,6 +66,15 @@ void    Server::AcceptNewClient()
         std::cout << strerror(errno) << std::endl;
         errno;
     }
+        Client *newClient = new Client(clientSocket);
+    newClient->setHostname(inet_ntoa(clientAddr.sin_addr));
+    _clients[clientSocket] = newClient;
+    struct pollfd clientPollFd;
+    clientPollFd.fd = clientSocket;
+    clientPollFd.events = POLLIN;
+    clientPollFd.revents = 0;
+    _pollFds.push_back(clientPollFd);
+}
 }
 
 void Server::setup() {

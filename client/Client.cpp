@@ -1,6 +1,14 @@
 #include "Client.hpp"
 
-Client::Client(){   }
+Client::Client(int clientSocket)
+{
+    socketfd = clientSocket;
+    nickname = "";
+    username = "";
+    realname = "";
+    isRegistered = "";
+    buffer = "";
+}
 
 Client::Client(const Client &obj){
 

@@ -16,7 +16,7 @@ private :
 
 public :
 
-    Client();
+    Client(int clientSocket);
     Client(const Client &obj);
     Client &operator=(const Client &obj);
     ~Client();
