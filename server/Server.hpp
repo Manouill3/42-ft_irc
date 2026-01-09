@@ -14,6 +14,8 @@
 #include <vector>
 #include <stdlib.h>
 #include <poll.h>
+#include <cerrno>
+
 #include "../client/Client.hpp"
 
 
@@ -27,9 +29,11 @@ private:
     std::string password;
 
     std::vector <pollfd> fds;
-    // std::map<int, *Client> clients;
+    std::map<const int, Client*> clients;
     // std::map<std::string> channels;
     
+    sockaddr_in serv;
+
 public:
 
     Server();
@@ -40,6 +44,8 @@ public:
     
     void setup();
     void start();
+    void AcceptNewClient();
+    void HandleMessage(int fd);
 };
 
 #endif

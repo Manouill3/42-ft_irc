@@ -40,7 +40,6 @@ void Server::setup() {
     
     fcntl(serverSocket, F_SETFL, O_NONBLOCK);
 
-    sockaddr_in serv;
     serv.sin_family = AF_INET;
     serv.sin_addr.s_addr = INADDR_ANY;
     serv.sin_port = htons(port);
@@ -63,6 +62,42 @@ void Server::start() {
         if (activity < 0)
             running = false;
 
-        
+        for (size_t i = 0; i < fds.size(); i++) {
+            if (fds[i].revents && POLLIN) {
+                if (i == 0)
+                    AcceptNewClient();
+                // else
+                    // HandleMessage(0);
+            }
+        }
     }
 }
+
+void    Server::AcceptNewClient()
+{
+    sockaddr_in client_addr;
+    socklen_t client_len = sizeof(client_addr);
+
+    int clientSocket = accept(serverSocket, ((sockaddr*)&client_addr), &client_len);
+    if (clientSocket < 0)
+    {
+        std::cout << strerror(errno) << std::endl;
+        errno;
+    }
+    
+    Client *newClient = new Client(clientSocket);
+    newClient->setHostname(inet_ntoa(client_addr.sin_addr));
+    clients[clientSocket] = newClient;
+
+    struct pollfd clientPollFd;
+    clientPollFd.fd = clientSocket;
+    clientPollFd.events = POLLIN;
+    clientPollFd.revents = 0;
+    fds.push_back(clientPollFd);
+}
+ 
+
+// void Server::HandleMessage(int fd) {
+
+
+// }
