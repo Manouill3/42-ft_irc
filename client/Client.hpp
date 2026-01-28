@@ -2,40 +2,35 @@
  #define CLIENT_HPP
 
 #include <iostream>
+#include <set>
+
+enum State {
+
+    Not_connected,
+    Password_sent,
+    Registering,
+    Registered
+};
 
 class Client {
 
-private :
+    private :
 
-    int clientSocket;
-    bool isRegistered;
-    std::string hostname;
-    std::string nickname;
-    std::string username;
-    std::string realname;
-    std::string buffer;
+        int ClientSocket;
+        State state;
+        std::set<std::string> enabledCaps;
+        bool capNegociating;
+        bool passwordAuthenticated;
+        std::string nickname;
+        std::string username;
+        std::string realname;
+        std::string hostname;
+        std::string buffer;
 
-public :
+    public :
 
-    Client();
-    Client(int fd);
-    Client(const Client &obj);
-    Client &operator=(const Client &obj);
-    ~Client();
+        
 
-    int getSocketFd() const;
-    const std::string &getNickname() const;
-    const std::string &getUsername() const;
-    const std::string &getRealname() const;
-    const std::string &getHostname() const;
-    const std::string &getBuffer() const;
-
-    void setNickname(const std::string &nickname);
-    void setUsername(const std::string &username);
-    void setRealname(const std::string &realname);
-    void setHostname(const std::string &hostname);
-    // void setPasswordAuthenticated(bool auth);
-    // void setCapNegotiating(bool negotiating);
 };
 
  #endif //client.hpp

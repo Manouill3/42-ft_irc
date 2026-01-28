@@ -17,35 +17,32 @@
 #include <cerrno>
 
 #include "../client/Client.hpp"
-
+#include "../channel/Channel.hpp"
 
 class Server {
 
-private:
-    
-    int port;
-    bool running;
-    int serverSocket;
-    std::string password;
+    private:
+        
+        bool running;
+        int port;
+        int serverSocket;
+        std::string password;
+        std::string hostname;
+        std::string serverIP;
+        std::vector<struct pollfd> fds;
+        std::vector<int> ClientToRem;
+        std::map<int, Client*> clients;
+        std::map<std::string, Channel*> channels;
 
-    std::vector <pollfd> fds;
-    std::map<const int, Client*> clients;
-    // std::map<std::string> channels;
-    
-    sockaddr_in serv;
+    public:
 
-public:
+        Server();
+        Server(std::string port, std::string password);
+        Server(const Server& obj);
+        Server &operator=(const Server& obj);
+        ~Server();
 
-    Server();
-    Server(std::string port, std::string password);
-    Server(const Server& obj);
-    Server &operator=(const Server& obj);
-    ~Server();
-    
-    void setup();
-    void start();
-    void AcceptNewClient();
-    void HandleMessage(int fd);
+        
 };
 
 #endif
