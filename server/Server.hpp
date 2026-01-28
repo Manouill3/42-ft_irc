@@ -23,10 +23,10 @@ class Server {
 
     private:
         
-        bool running;
-        int port;
-        int serverSocket;
-        std::string password;
+        bool _serverRun;
+        int _port;
+        int _serverSocket;
+        std::string _password;
         std::string hostname;
         std::string serverIP;
         std::vector<struct pollfd> fds;
@@ -37,10 +37,12 @@ class Server {
     public:
 
         Server();
-        Server(std::string port, std::string password);
+        Server(int port, std::string password);
         Server(const Server& obj);
         Server &operator=(const Server& obj);
         ~Server();
+
+        void    Server::start();
 
         
 };
